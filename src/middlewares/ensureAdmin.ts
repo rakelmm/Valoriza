@@ -14,4 +14,4 @@ export function ensureAdmin(
    return response.status(401).json({ 
        error: "Unauthorized",
    });
-}
+} 
