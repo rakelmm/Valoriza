@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { verify } from "jsonwebtoken"
+import { verify } from "jsonwebtoken";
+
+interface IPayload {
+  sub: string;
+}
 
 export function eusureAuthenticated(
     request: Request, 
@@ -14,15 +18,14 @@ export function eusureAuthenticated(
         return response.status(401).end();
     }
         const [,token] = authToken.split(" ");
-    console.log(token);
 
    try { 
-    const decode = verify( token , "0614e409a085b502837228525d5d6e6e");
+    const {sub} = verify( token , "0614e409a085b502837228525d5d6e6e") as IPayload;
+
+    request.user_id = sub;
     
      return next();
    } catch(err) {
      return response.status(401).end();
    }
-
-
 }
